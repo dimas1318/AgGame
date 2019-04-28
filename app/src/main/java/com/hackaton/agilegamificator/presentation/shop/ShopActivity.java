@@ -120,7 +120,14 @@ public class ShopActivity extends AppCompatActivity implements BonusPay {
                         @Override
                         public void onSuccess(Response<Bon> response) {
                             hideProgress();
-                            //todo
+
+                            if (response.body() != null &&
+                                    response.body().getResult() != null &&
+                                    response.body().getResult().equalsIgnoreCase("success")) {
+                                Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getBaseContext(), "Not enough money", Toast.LENGTH_LONG).show();
+                            }
                         }
 
                         @Override

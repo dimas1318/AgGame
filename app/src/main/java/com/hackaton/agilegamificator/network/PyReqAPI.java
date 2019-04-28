@@ -29,6 +29,6 @@ public interface PyReqAPI {
     @GET("bonuses")
     Single<Response<List<Bonus>>> getBonuses();
 
-    @GET("change_balance/{accountId}/{cost}")
+    @GET("bonus/{accountId}/{cost}")
     Single<Response<Bon>> postBonusWasting(@Path("accountId") String accountId, @Path("cost") int cost);
 }
