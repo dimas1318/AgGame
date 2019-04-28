@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.hackaton.agilegamificator.AppManager;
 import com.hackaton.agilegamificator.R;
 import com.hackaton.agilegamificator.network.Dashboard;
 
@@ -115,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
         RatingBar ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar);
 
         TextView text = rankDialog.findViewById(R.id.rank_dialog_text1);
-        text.setText("Set a mark to Dmitriy Borisov");
+        if (AppManager.getInstance().readDisplayName() != null
+                && AppManager.getInstance().readDisplayName().contains("Borisov")) {
+            text.setText("Set a mark to Dmitry Parshin");
+        } else {
+            text.setText("Set a mark to Dmitriy Borisov");
+        }
 
         View updateButton = rankDialog.findViewById(R.id.rank_dialog_button);
         updateButton.setOnClickListener(v -> {
