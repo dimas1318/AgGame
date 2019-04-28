@@ -30,7 +30,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull DashboardViewHolder holder, int position) {
         final RateRaw rateRaw = mRaws.get(position);
-        holder.bind(rateRaw);
+        holder.bind(rateRaw, position + 1);
     }
 
     @Override

@@ -13,16 +13,19 @@ import com.hackaton.agilegamificator.network.RateRaw;
  */
 public class DashboardViewHolder extends RecyclerView.ViewHolder {
 
+    private TextView mPosition;
     private TextView mName;
     private TextView mBalance;
 
     public DashboardViewHolder(@NonNull View itemView) {
         super(itemView);
+        mPosition = itemView.findViewById(R.id.dash_position);
         mName = itemView.findViewById(R.id.dash_name);
         mBalance = itemView.findViewById(R.id.dash_balance);
     }
 
-    public void bind(RateRaw raw) {
+    public void bind(RateRaw raw, int position) {
+        mPosition.setText(String.valueOf(position));
         mName.setText(raw.getName());
         mBalance.setText(String.valueOf(raw.getBalance()));
     }
