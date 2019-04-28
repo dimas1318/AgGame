@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMeetingDialog() {
         new AlertDialog.Builder(this)
-                .setMessage("Did you visit a meeting today?")
+                .setTitle("Did you visit a meeting today?")
                 .setNegativeButton("No", null)
                 .setPositiveButton("Yes", (dialog, which) -> {
                     showMarkDialog();
