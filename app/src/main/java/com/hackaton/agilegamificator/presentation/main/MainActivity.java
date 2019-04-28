@@ -1,0 +1,111 @@
+package com.hackaton.agilegamificator.presentation.main;
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
+
+import com.hackaton.agilegamificator.R;
+import com.hackaton.agilegamificator.network.Dashboard;
+import com.hackaton.agilegamificator.network.RateRaw;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+public class MainActivity extends AppCompatActivity {
+
+    public static final String PAGE_KEY = "com.hackaton.agilegamificator.presentation.main.MainActivity.PAGE_KEY";
+
+    private static final int DEFAULT_PAGE = R.id.navigation_tasks;
+
+    @BindView(R.id.nav_view)
+    protected BottomNavigationView mNavView;
+
+    @BindView(R.id.progress_bar)
+    protected ProgressBar mProgressBar;
+
+    public Dashboard mDashboard;
+
+    private Unbinder mUnbinder;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mUnbinder = ButterKnife.bind(this);
+
+        setupBottomNavigation();
+
+        int page = getIntent().getIntExtra(PAGE_KEY, DEFAULT_PAGE);
+        mNavView.setSelectedItemId(page);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
+    }
+
+    @Override
+    public void onBackPressed() {
+        hideProgress();
+        hideKeyboard();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void setupBottomNavigation() {
+        mNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_tasks:
+                        navigateTo(TasksFragment.newInstance());
+                        return true;
+                    case R.id.navigation_dashboard:
+                        navigateTo(DashboardFragment.newInstance());
+                        return true;
+                    case R.id.navigation_profile:
+                        navigateTo(ProfileFragment.newInstance());
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void navigateTo(@NonNull Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.commit();
+    }
+
+    public void showProgress() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    private void hideKeyboard() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) this
+                    .getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+}
