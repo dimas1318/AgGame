@@ -18,6 +18,12 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusViewHolder> {
 
     private List<Bonus> mBonuses = new ArrayList<>();
 
+    private BonusPay mListener;
+
+    public BonusAdapter(BonusPay mListener) {
+        this.mListener = mListener;
+    }
+
     @NonNull
     @Override
     public BonusViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
@@ -29,7 +35,7 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull BonusViewHolder holder, int position) {
         final Bonus bonus = mBonuses.get(position);
-        holder.bind(bonus);
+        holder.bind(bonus, mListener);
     }
 
     @Override

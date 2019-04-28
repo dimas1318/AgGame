@@ -1,12 +1,20 @@
 package com.hackaton.agilegamificator.presentation.shop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.hackaton.agilegamificator.AppManager;
 import com.hackaton.agilegamificator.R;
+import com.hackaton.agilegamificator.StringUtils;
+import com.hackaton.agilegamificator.network.PyRequestManager;
+import com.hackaton.agilegamificator.presentation.login.LoginActivity;
 import com.leochuan.CenterSnapHelper;
 import com.leochuan.ScaleLayoutManager;
 import com.leochuan.ViewPagerLayoutManager;
@@ -16,11 +24,18 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 /**
  * Created by Dmitry Parshin on 27.04.2019.
  */
-public class ShopActivity extends AppCompatActivity {
+public class ShopActivity extends AppCompatActivity implements BonusPay {
+
+    @BindView(R.id.progress_bar)
+    protected ProgressBar mProgressBar;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -68,7 +83,7 @@ public class ShopActivity extends AppCompatActivity {
                 .build();
         mRecyclerView.setLayoutManager(layoutManager);
         new CenterSnapHelper().attachToRecyclerView(mRecyclerView);
-        mAdapter = new BonusAdapter();
+        mAdapter = new BonusAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -77,5 +92,42 @@ public class ShopActivity extends AppCompatActivity {
         Bonus s = new Bonus("Купить путевку", 150);
         Bonus t = new Bonus("Взять отгул", 200);
         mAdapter.setData(Arrays.asList(f, s, t));
+    }
+
+    public void showProgress() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void pay(int cost) {
+        String accountId = AppManager.getInstance().readAccountId();
+        if (StringUtils.isEmpty(accountId)) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            showProgress();
+
+            PyRequestManager.getInstance().postBonusWasting(accountId, cost)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<Response<Void>>() {
+                        @Override
+                        public void onSuccess(Response<Void> balanceResponse) {
+                            hideProgress();
+                            //todo
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideProgress();
+                            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
     }
 }

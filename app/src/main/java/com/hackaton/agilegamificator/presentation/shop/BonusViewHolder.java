@@ -15,15 +15,18 @@ public class BonusViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mDescription;
     private TextView mPrice;
+    private View mPay;
 
     public BonusViewHolder(@NonNull View itemView) {
         super(itemView);
         mDescription = itemView.findViewById(R.id.bonus_description);
         mPrice = itemView.findViewById(R.id.bonus_price);
+        mPay = itemView.findViewById(R.id.pay);
     }
 
-    public void bind(Bonus bonus){
+    public void bind(Bonus bonus, BonusPay mListener) {
         mDescription.setText(bonus.getDescription());
         mPrice.setText(StringUtils.formatBalance(bonus.getPrice()));
+        mPay.setOnClickListener(v -> mListener.pay(bonus.getPrice()));
     }
 }
