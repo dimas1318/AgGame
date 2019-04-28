@@ -153,31 +153,18 @@ public class TasksFragment extends Fragment {
                                         .collect(Collectors.toList());
                                 setupSpinner(sprintNames);
                                 mSprints = sprints;
-//                            List<Issue> issues = listResponse.body().getIssues();
-//                            Collections.sort(issues, (lhs, rhs) -> {
-//                                String lS = lhs.getFields().getStatus().getName();
-//                                String rS = rhs.getFields().getStatus().getName();
-//                                int ll = convertStatus(lS);
-//                                int rr = convertStatus(rS);
-//
-//                                if (rr - ll != 0) {
-//                                    return rr - ll;
-//                                }
-//
-//                                String lPrior = lhs.getFields().getPriority().getName();
-//                                String rPrior = rhs.getFields().getPriority().getName();
-//                                int l = convertPrior(lPrior);
-//                                int r = convertPrior(rPrior);
-//                                return r - l;
-//                            });
-                                if (sprints.get(0).getIssues() == null ||
-                                        sprints.get(0).getIssues().isEmpty()) {
-                                    mTip.setVisibility(View.VISIBLE);
-                                    mRecyclerView.setVisibility(View.GONE);
-                                } else {
-                                    mTip.setVisibility(View.GONE);
-                                    mRecyclerView.setVisibility(View.VISIBLE);
-                                    mAdapter.setData(sprints.get(0).getIssues());
+
+                                if (mTip != null
+                                        && mRecyclerView != null) {
+                                    if (sprints.get(0).getIssues() == null ||
+                                            sprints.get(0).getIssues().isEmpty()) {
+                                        mTip.setVisibility(View.VISIBLE);
+                                        mRecyclerView.setVisibility(View.GONE);
+                                    } else {
+                                        mTip.setVisibility(View.GONE);
+                                        mRecyclerView.setVisibility(View.VISIBLE);
+                                        mAdapter.setData(sprints.get(0).getIssues());
+                                    }
                                 }
                             }
                         }

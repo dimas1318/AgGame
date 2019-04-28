@@ -121,8 +121,10 @@ public class ProfileFragment extends Fragment {
                             if (getActivity() instanceof MainActivity) {
                                 ((MainActivity) getActivity()).hideProgress();
                             }
-                            if (balanceResponse.body() != null) {
-                                mBalance.setText(StringUtils.formatBalance(balanceResponse.body().getBalance()));
+                            if (mBalance != null) {
+                                if (balanceResponse.body() != null) {
+                                    mBalance.setText(StringUtils.formatBalance(balanceResponse.body().getBalance()));
+                                }
                             }
                         }
 

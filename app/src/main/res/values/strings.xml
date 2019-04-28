@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AgileGamificator</string>
     <string name="title_tasks">Tasks</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">Leaderboard</string>
     <string name="title_profile">Profile</string>
     <string name="avatar">Avatar</string>
     <string name="balance">Balance:</string>
