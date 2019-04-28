@@ -1,6 +1,7 @@
 package com.hackaton.agilegamificator.presentation.main;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -34,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.progress_bar)
     protected ProgressBar mProgressBar;
 
-    public Dashboard mDashboard;
-
     private Unbinder mUnbinder;
 
     @Override
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         int page = getIntent().getIntExtra(PAGE_KEY, DEFAULT_PAGE);
         mNavView.setSelectedItemId(page);
 
-        showMarkDialog();
         showMeetingDialog();
     }
 
@@ -136,7 +134,10 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setMessage("Did you visit a meeting today?")
                 .setNegativeButton("No", null)
-                .setPositiveButton("Yes", null)
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    showMarkDialog();
+                    dialog.dismiss();
+                })
                 .create()
                 .show();
     }
