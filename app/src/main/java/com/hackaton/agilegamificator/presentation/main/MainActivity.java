@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mNavView.setSelectedItemId(page);
 
         showMarkDialog();
+        showMeetingDialog();
     }
 
     @Override
@@ -123,5 +124,14 @@ public class MainActivity extends AppCompatActivity {
             rankDialog.dismiss();
         });
         rankDialog.show();
+    }
+
+    private void showMeetingDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage("Did you visit a meeting today?")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", null)
+                .create()
+                .show();
     }
 }
