@@ -1,5 +1,6 @@
 package com.hackaton.agilegamificator.presentation.main;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,12 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.hackaton.agilegamificator.R;
 import com.hackaton.agilegamificator.network.Dashboard;
-import com.hackaton.agilegamificator.network.RateRaw;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         int page = getIntent().getIntExtra(PAGE_KEY, DEFAULT_PAGE);
         mNavView.setSelectedItemId(page);
+
+        showMarkDialog();
     }
 
     @Override
@@ -67,23 +69,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        mNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_tasks:
-                        navigateTo(TasksFragment.newInstance());
-                        return true;
-                    case R.id.navigation_dashboard:
-                        navigateTo(DashboardFragment.newInstance());
-                        return true;
-                    case R.id.navigation_profile:
-                        navigateTo(ProfileFragment.newInstance());
-                        return true;
-                }
-                return false;
+        mNavView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.navigation_tasks:
+                    navigateTo(TasksFragment.newInstance());
+                    return true;
+                case R.id.navigation_dashboard:
+                    navigateTo(DashboardFragment.newInstance());
+                    return true;
+                case R.id.navigation_profile:
+                    navigateTo(ProfileFragment.newInstance());
+                    return true;
             }
+            return false;
         });
     }
 
@@ -107,5 +105,23 @@ public class MainActivity extends AppCompatActivity {
                     .getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    private void showMarkDialog() {
+        Dialog rankDialog = new Dialog(this);
+        rankDialog.setContentView(R.layout.rating_dialog);
+        rankDialog.setCancelable(true);
+        RatingBar ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar);
+
+        TextView text = rankDialog.findViewById(R.id.rank_dialog_text1);
+        text.setText("Set a mark to Dmitriy Borisov");
+
+        View updateButton = rankDialog.findViewById(R.id.rank_dialog_button);
+        updateButton.setOnClickListener(v -> {
+            float rating = ratingBar.getRating();
+            //todo send request
+            rankDialog.dismiss();
+        });
+        rankDialog.show();
     }
 }
