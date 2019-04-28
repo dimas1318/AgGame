@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.hackaton.agilegamificator.AppManager;
 import com.hackaton.agilegamificator.R;
 import com.hackaton.agilegamificator.StringUtils;
+import com.hackaton.agilegamificator.network.Bon;
 import com.hackaton.agilegamificator.network.PyRequestManager;
 import com.hackaton.agilegamificator.presentation.login.LoginActivity;
 import com.leochuan.CenterSnapHelper;
@@ -115,9 +116,9 @@ public class ShopActivity extends AppCompatActivity implements BonusPay {
             PyRequestManager.getInstance().postBonusWasting(accountId, cost)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<Response<Void>>() {
+                    .subscribe(new DisposableSingleObserver<Response<Bon>>() {
                         @Override
-                        public void onSuccess(Response<Void> balanceResponse) {
+                        public void onSuccess(Response<Bon> response) {
                             hideProgress();
                             //todo
                         }

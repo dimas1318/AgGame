@@ -45,7 +45,7 @@ public class PyReqAPIService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<Response<Void>> postBonusWasting(String accountId, int cost) {
+    public Single<Response<Bon>> postBonusWasting(String accountId, int cost) {
         return mPyReqApi.postBonusWasting(accountId, cost)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

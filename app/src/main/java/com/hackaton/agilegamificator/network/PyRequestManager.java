@@ -51,7 +51,7 @@ public class PyRequestManager {
         return mPyReqService.getBalance(accountId);
     }
 
-    public Single<Response<Void>> postBonusWasting(String accountId, int cost) {
+    public Single<Response<Bon>> postBonusWasting(String accountId, int cost) {
         return mPyReqService.postBonusWasting(accountId, cost);
     }
 }
